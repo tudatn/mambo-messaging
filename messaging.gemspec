@@ -17,5 +17,5 @@ Gem::Specification.new do |s|
 	s.test_files = Dir["test/**/*"]
 
   # specify any dependencies here; for example:
-  s.add_runtime_dependency "mambo-sms"  
+  s.add_runtime_dependency "mambo-sms"
 end

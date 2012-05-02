@@ -8,29 +8,33 @@ module Messaging
 		# respond to messages
 		def respond_to_messages(messages, send_responses)
 			messages.each do |message|
-				# respond to message
-				response = respond(message)
+				Sms::Message.transaction do
+					# respond to message
+					response = respond(message)
 
-				# no response
-				next if response.nil?
+					# no response
+					next if response.nil?
 
-				# send responses?
-				sender.send(response) if send_responses
+					# send responses?
+					sender.send(response) if send_responses
+				end
 			end
 		end
 
 		# respond to message
 		def respond_to_message(message, send_response)
-			# get responder and respond to message
-			response = respond(message)
+			Sms::Message.transaction do
+				# get responder and respond to message
+				response = respond(message)
 
-			# no response
-			return response if response.nil?
+				# no response
+				return response if response.nil?
 
-			# send response
-			sender.send(response) if send_response
+				# send response
+				sender.send(response) if send_response
 
-			response
+				response
+			end
 		end
 
 	protected
