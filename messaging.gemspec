@@ -14,8 +14,12 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "mambo-messaging"
 
 	s.files = Dir["{app,config,lib}/**/*"] + ["Rakefile"]
-	s.test_files = Dir["test/**/*"]
 
   # specify any dependencies here; for example:
   s.add_runtime_dependency "mambo-sms"
+  
+	s.add_development_dependency "rspec-rails"
+	s.add_development_dependency "factory_girl"
+	s.add_development_dependency "combustion"
+	s.add_development_dependency "magic_encoding"
 end

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require "messaging/version"
 require "messaging/engine"
 require "messaging/responder"
