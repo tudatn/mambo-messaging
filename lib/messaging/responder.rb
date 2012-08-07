@@ -11,7 +11,7 @@ module Messaging
 			messages.each do |message|
 				Sms::Message.transaction do
 					# respond to message
-					response = respond(message)
+					response = create_response(message)
 
 					# no response
 					next if response.nil?
@@ -26,7 +26,7 @@ module Messaging
 		def respond_to_message(message, send_response)
 			Sms::Message.transaction do
 				# get responder and respond to message
-				response = respond(message)
+				response = create_response(message)
 
 				# no response
 				return response if response.nil?
@@ -44,27 +44,24 @@ module Messaging
 
 	private
 		#
-		def respond(message)
+		def create_response(message)
 			begin
 				# thread message
-				if !message.subscriber.nil?
+				if message.subscriber
 					message.parent = message.subscriber.messages.sent.last
 				end
 
 				# return reply
-				return reply_to(message, reply(message))
+				body = respond(message)
+
+				return nil if body.blank?
+
+				message.send_reply(body)
 
 			ensure
 				# save message
 				message.save
 			end
-		end
-
-		#
-		def reply_to(message, body)
-			return nil if body.nil?
-			return nil if body.empty?
-			return Sms::Message.create_reply(message, body)
 		end
 	end
 end
